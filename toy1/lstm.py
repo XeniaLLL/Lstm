@@ -87,8 +87,8 @@ class LstmNode:
     def bottom_data_is(self, x, s_prev=None, h_prev=None):
         if s_prev is None: s_prev = np.zeros_like(self.state.s)
         if h_prev is None: h_prev = np.zeros_like(self.state.h)
-        self.s_prev = s_prev  # present state
-        self.h_prev = h_prev  # present hidden layer
+        self.s_prev = s_prev  # last time(t-1) state
+        self.h_prev = h_prev  # last time hidden layer
 
         xc = np.hstack((x, h_prev))  # concatenate in the horizontal direction
         self.state.g = np.tanh(np.dot(self.param.wg, xc) + self.param.bg)
@@ -132,7 +132,7 @@ class LstmNode:
         self.state.bottom_diff_h = dxc[self.param.x_dim:]
 
 
-class LstmNetwork():
+class LstmNetwork:
     def __init__(self, lstm_param):
         self.lstm_param = lstm_param
         self.lstm_node_list = []
